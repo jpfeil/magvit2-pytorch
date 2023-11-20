@@ -1699,7 +1699,7 @@ class VideoTokenizer(Module):
                     multiscale_real_logits = discr(video)
                     multiscale_fake_logits = discr(recon_video)
 
-                    multiscale_discr_loss = hinge_discr_loss(fake_logits, real_logits)
+                    multiscale_discr_loss = hinge_discr_loss(multiscale_fake_logits, multiscale_real_logits)
 
                     multiscale_discr_losses.append(multiscale_discr_loss)
             else:
@@ -1775,7 +1775,7 @@ class VideoTokenizer(Module):
 
         if self.has_multiscale_discrs:
             for discr in self.multiscale_discrs:
-                fake_logits = recon_video_frames
+                fake_logits = discr(recon_video_frames)
                 multiscale_gen_loss = hinge_gen_loss(fake_logits)
 
                 multiscale_gen_losses.append(multiscale_gen_loss)
